@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>True Cost Calculator | B2B Research Project Comparison | Smart Connect Research</title>
+    <title>True Cost Calculator | Quantitative Market Research | Smart Connect Research</title>
     <style>
         * {
             margin: 0;
@@ -421,6 +421,92 @@
                 grid-template-columns: 1fr;
             }
         }
+
+        /* FAQ Accordion Styles */
+        .faq-item {
+            background: white;
+            border-radius: 12px;
+            border: 2px solid var(--border);
+            margin-bottom: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item:hover {
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(0, 102, 204, 0.1);
+        }
+
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 25px;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.3s ease;
+        }
+
+        .faq-question:hover {
+            background: var(--bg-light);
+        }
+
+        .faq-question h3 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            flex: 1;
+        }
+
+        .faq-number {
+            background: var(--accent);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .faq-arrow {
+            font-size: 1.5rem;
+            color: var(--accent);
+            transition: transform 0.3s ease;
+            font-weight: bold;
+        }
+
+        .faq-item.active .faq-arrow {
+            transform: rotate(180deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.4s ease;
+            padding: 0 25px;
+        }
+
+        .faq-item.active .faq-answer {
+            max-height: 1000px;
+            padding: 0 25px 25px 25px;
+        }
+
+        .faq-answer p {
+            font-size: 1rem;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+
+        .faq-answer p:last-child {
+            margin-bottom: 0;
+        }
     </style>
 </head>
 <body>
@@ -520,7 +606,7 @@
                     </div>
                     <div class="input-group">
                         <label class="input-label" for="altPrice">Total Quoted Price (<span class="currency-symbol">$</span>)</label>
-                        <input type="number" id="altPrice" class="input-field" placeholder="70000">
+                        <input type="number" id="altPrice" class="input-field" placeholder="e.g., 70000">
                     </div>
                 </div>
 
@@ -532,7 +618,7 @@
                     </p>
                     <div class="input-group">
                         <label class="input-label" for="scrPrice">Total Quoted Price (<span class="currency-symbol">$</span>)</label>
-                        <input type="number" id="scrPrice" class="input-field" placeholder="85000">
+                        <input type="number" id="scrPrice" class="input-field" placeholder="e.g., 85000">
                     </div>
                 </div>
             </div>
@@ -566,16 +652,16 @@
                         <h3 style="margin: 0; font-size: 1.1rem;" id="altProviderHeading">Alternative Provider - Hidden Costs</h3>
                     </div>
                     <div style="background: white; border: 2px solid var(--primary); border-top: none; border-radius: 0 0 12px 12px; padding: 20px;">
-                        <!-- Internal Validation -->
+                        <!-- Data Quality Validation & Cleaning -->
                         <div style="margin-bottom: 20px;">
                             <label style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">
-                                Internal Validation
+                                Data Quality Validation & Cleaning
                             </label>
-                            <span style="font-size: 0.85rem; color: var(--text-light);">Reviewing/flagging bad respondents</span>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">Flagging bots, speeders, cleaning datasets</span>
                             <div style="display: flex; gap: 5px; margin: 8px 0;">
                                 <button onclick="setAltValidation(0)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">None</button>
-                                <button onclick="setAltValidation(10)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
-                                <button onclick="setAltValidation(25)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
+                                <button onclick="setAltValidation(5)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
+                                <button onclick="setAltValidation(20)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
                                 <button onclick="setAltValidation(40)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
@@ -585,17 +671,17 @@
                             </div>
                         </div>
 
-                        <!-- Project Management -->
+                        <!-- Sample Management & Re-fielding -->
                         <div style="margin-bottom: 20px;">
                             <label style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">
-                                Project Management Overhead
+                                Sample Management & Re-fielding
                             </label>
-                            <span style="font-size: 0.85rem; color: var(--text-light);">Coordinating replacements, chasing vendor</span>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">Coordinating vendors, managing re-fielding</span>
                             <div style="display: flex; gap: 5px; margin: 8px 0;">
                                 <button onclick="setAltPM(0)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">None</button>
-                                <button onclick="setAltPM(15)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
-                                <button onclick="setAltPM(35)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
-                                <button onclick="setAltPM(60)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
+                                <button onclick="setAltPM(10)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
+                                <button onclick="setAltPM(25)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
+                                <button onclick="setAltPM(50)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="number" id="altPM" style="width: 80px; padding: 8px; border: 2px solid var(--border); border-radius: 6px;" onchange="calculateCosts()">
@@ -604,17 +690,17 @@
                             </div>
                         </div>
 
-                        <!-- Stakeholder Management -->
+                        <!-- Programming, Testing & Troubleshooting -->
                         <div style="margin-bottom: 20px;">
                             <label style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">
-                                Stakeholder Management
+                                Programming, Testing & Troubleshooting
                             </label>
-                            <span style="font-size: 0.85rem; color: var(--text-light);">Explaining delays, managing expectations</span>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">QA testing, fixing logic errors, soft launch issues</span>
                             <div style="display: flex; gap: 5px; margin: 8px 0;">
                                 <button onclick="setAltStakeholder(0)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">None</button>
-                                <button onclick="setAltStakeholder(5)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
-                                <button onclick="setAltStakeholder(15)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
-                                <button onclick="setAltStakeholder(25)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
+                                <button onclick="setAltStakeholder(8)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
+                                <button onclick="setAltStakeholder(18)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
+                                <button onclick="setAltStakeholder(35)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="number" id="altStakeholder" style="width: 80px; padding: 8px; border: 2px solid var(--border); border-radius: 6px;" onchange="calculateCosts()">
@@ -623,17 +709,17 @@
                             </div>
                         </div>
 
-                        <!-- Senior Escalation -->
+                        <!-- Stakeholder & Client Communication -->
                         <div style="margin-bottom: 20px;">
                             <label style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">
-                                Senior Escalation Time
+                                Stakeholder & Client Communication
                             </label>
-                            <span style="font-size: 0.85rem; color: var(--text-light);">VP/Director involvement in issues</span>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">Explaining sample issues, managing escalations</span>
                             <div style="display: flex; gap: 5px; margin: 8px 0;">
                                 <button onclick="setAltEscalation(0)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">None</button>
-                                <button onclick="setAltEscalation(2)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
-                                <button onclick="setAltEscalation(8)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
-                                <button onclick="setAltEscalation(15)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
+                                <button onclick="setAltEscalation(3)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
+                                <button onclick="setAltEscalation(10)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
+                                <button onclick="setAltEscalation(20)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="number" id="altEscalation" style="width: 80px; padding: 8px; border: 2px solid var(--border); border-radius: 6px;" onchange="calculateCosts()">
@@ -642,12 +728,12 @@
                             </div>
                         </div>
 
-                        <!-- Opportunity Cost -->
+                        <!-- Strategic Delays & Opportunity Cost -->
                         <div style="margin-bottom: 20px;">
                             <label style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">
-                                Opportunity Cost
+                                Strategic Delays & Opportunity Cost
                             </label>
-                            <span style="font-size: 0.85rem; color: var(--text-light);">Projects delayed, decisions postponed</span>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">Product launches delayed, decisions postponed</span>
                             <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
                                 <span style="color: var(--text-light);"><span class="currency-symbol">$</span></span>
                                 <input type="number" id="altOpportunity" style="width: 100px; padding: 8px; border: 2px solid var(--border); border-radius: 6px;" onchange="calculateCosts()">
@@ -674,17 +760,17 @@
                         <h3 style="margin: 0; font-size: 1.1rem;">SCR - Efficient Delivery</h3>
                     </div>
                     <div style="background: white; border: 2px solid #10b981; border-top: none; border-radius: 0 0 12px 12px; padding: 20px;">
-                        <!-- Internal Validation -->
+                        <!-- Data Quality Validation & Cleaning -->
                         <div style="margin-bottom: 20px;">
                             <label style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">
-                                Internal Validation
+                                Data Quality Validation & Cleaning
                             </label>
-                            <span style="font-size: 0.85rem; color: var(--text-light);">Reviewing/flagging bad respondents</span>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">Flagging bots, speeders, cleaning datasets</span>
                             <div style="display: flex; gap: 5px; margin: 8px 0;">
-                                <button onclick="setScrValidation(0)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">None</button>
-                                <button onclick="setScrValidation(2)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
-                                <button onclick="setScrValidation(5)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
-                                <button onclick="setScrValidation(10)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
+                                <button onclick="setScrValidation(0)" style="padding: 4px 10px; background: #3b82f6; color: white; border: 1px solid #2563eb; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">None</button>
+                                <button onclick="setScrValidation(1)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
+                                <button onclick="setScrValidation(3)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
+                                <button onclick="setScrValidation(8)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="number" id="scrValidation" style="width: 80px; padding: 8px; border: 2px solid var(--border); border-radius: 6px;" onchange="calculateCosts()">
@@ -693,17 +779,17 @@
                             </div>
                         </div>
 
-                        <!-- Project Management -->
+                        <!-- Sample Management & Re-fielding -->
                         <div style="margin-bottom: 20px;">
                             <label style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">
-                                Project Management Overhead
+                                Sample Management & Re-fielding
                             </label>
-                            <span style="font-size: 0.85rem; color: var(--text-light);">Coordinating replacements, chasing vendor</span>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">Coordinating vendors, managing re-fielding</span>
                             <div style="display: flex; gap: 5px; margin: 8px 0;">
                                 <button onclick="setScrPM(0)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">None</button>
-                                <button onclick="setScrPM(3)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
-                                <button onclick="setScrPM(8)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
-                                <button onclick="setScrPM(15)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
+                                <button onclick="setScrPM(2)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
+                                <button onclick="setScrPM(5)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
+                                <button onclick="setScrPM(12)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="number" id="scrPM" style="width: 80px; padding: 8px; border: 2px solid var(--border); border-radius: 6px;" onchange="calculateCosts()">
@@ -712,17 +798,17 @@
                             </div>
                         </div>
 
-                        <!-- Stakeholder Management -->
+                        <!-- Programming, Testing & Troubleshooting -->
                         <div style="margin-bottom: 20px;">
                             <label style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">
-                                Stakeholder Management
+                                Programming, Testing & Troubleshooting
                             </label>
-                            <span style="font-size: 0.85rem; color: var(--text-light);">Explaining delays, managing expectations</span>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">QA testing, fixing logic errors, soft launch issues</span>
                             <div style="display: flex; gap: 5px; margin: 8px 0;">
                                 <button onclick="setScrStakeholder(0)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">None</button>
-                                <button onclick="setScrStakeholder(1)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
-                                <button onclick="setScrStakeholder(3)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
-                                <button onclick="setScrStakeholder(5)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
+                                <button onclick="setScrStakeholder(2)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
+                                <button onclick="setScrStakeholder(5)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
+                                <button onclick="setScrStakeholder(10)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="number" id="scrStakeholder" style="width: 80px; padding: 8px; border: 2px solid var(--border); border-radius: 6px;" onchange="calculateCosts()">
@@ -731,17 +817,17 @@
                             </div>
                         </div>
 
-                        <!-- Senior Escalation -->
+                        <!-- Stakeholder & Client Communication -->
                         <div style="margin-bottom: 20px;">
                             <label style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">
-                                Senior Escalation Time
+                                Stakeholder & Client Communication
                             </label>
-                            <span style="font-size: 0.85rem; color: var(--text-light);">VP/Director involvement in issues</span>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">Explaining sample issues, managing escalations</span>
                             <div style="display: flex; gap: 5px; margin: 8px 0;">
                                 <button onclick="setScrEscalation(0)" style="padding: 4px 10px; background: #3b82f6; color: white; border: 1px solid #2563eb; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">None</button>
-                                <button onclick="setScrEscalation(0)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
-                                <button onclick="setScrEscalation(1)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
-                                <button onclick="setScrEscalation(3)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
+                                <button onclick="setScrEscalation(1)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Low</button>
+                                <button onclick="setScrEscalation(3)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">Typical</button>
+                                <button onclick="setScrEscalation(6)" style="padding: 4px 10px; background: #e5e7eb; border: 1px solid #9ca3af; border-radius: 4px; cursor: pointer; font-size: 0.8rem;">High</button>
                             </div>
                             <div style="display: flex; align-items: center; gap: 10px;">
                                 <input type="number" id="scrEscalation" style="width: 80px; padding: 8px; border: 2px solid var(--border); border-radius: 6px;" onchange="calculateCosts()">
@@ -750,12 +836,12 @@
                             </div>
                         </div>
 
-                        <!-- Opportunity Cost -->
+                        <!-- Strategic Delays & Opportunity Cost -->
                         <div style="margin-bottom: 20px;">
                             <label style="font-weight: 600; color: var(--text-dark); display: block; margin-bottom: 5px;">
-                                Opportunity Cost
+                                Strategic Delays & Opportunity Cost
                             </label>
-                            <span style="font-size: 0.85rem; color: var(--text-light);">Projects delayed, decisions postponed</span>
+                            <span style="font-size: 0.85rem; color: var(--text-light);">Product launches delayed, decisions postponed</span>
                             <div style="display: flex; align-items: center; gap: 10px; margin-top: 8px;">
                                 <span style="color: var(--text-light);"><span class="currency-symbol">$</span></span>
                                 <input type="number" id="scrOpportunity" style="width: 100px; padding: 8px; border: 2px solid var(--border); border-radius: 6px;" onchange="calculateCosts()">
@@ -780,7 +866,129 @@
 
         <!-- Calculate Button -->
         <div class="calculator-section">
-            <button class="cta-button" style="width: 100%;" onclick="calculateTotalCosts()">Calculate True Project Costs</button>
+            <button class="cta-button" style="width: 100%; font-size: 1.3rem; padding: 20px 40px; box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3); animation: pulse 2s ease-in-out infinite;" onclick="calculateTotalCosts()">
+                📊 Calculate True Project Costs
+            </button>
+            <style>
+                @keyframes pulse {
+                    0%, 100% {
+                        transform: scale(1);
+                        box-shadow: 0 8px 20px rgba(0, 102, 204, 0.3);
+                    }
+                    50% {
+                        transform: scale(1.02);
+                        box-shadow: 0 12px 30px rgba(0, 102, 204, 0.5);
+                    }
+                }
+            </style>
+        </div>
+
+        <!-- FAQ Section -->
+        <div class="calculator-section" style="margin-top: 40px;">
+            <h2 class="section-title" style="border-bottom: none; margin-bottom: 30px;">
+                Understanding Hidden Costs in Quantitative Research
+            </h2>
+            
+            <div style="background: linear-gradient(135deg, rgba(0, 51, 102, 0.05), transparent); padding: 25px; border-radius: 12px; margin-bottom: 30px;">
+                <p style="font-size: 1.1rem; color: var(--text-dark); line-height: 1.8;">
+                    When evaluating survey sample providers, the quoted price per complete is just the beginning. Elite research buyers at firms like Gartner, IQVIA, and Bain understand that <strong>hidden costs can add 30-50% to quantitative project budgets</strong>. This FAQ explains why these costs matter and how to quantify them.
+                </p>
+            </div>
+
+            <!-- FAQ Items -->
+            <div style="display: flex; flex-direction: column; gap: 0;">
+                
+                <!-- FAQ 1 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>
+                            <span class="faq-number">1</span>
+                            Data Quality Validation & Cleaning
+                        </h3>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>What it means:</strong> Time spent identifying and removing bots, speeders, straight-liners, duplicate responses, and professional survey takers. Includes reviewing open-ended responses for gibberish, flagging suspicious IP patterns, and cleaning datasets before analysis.</p>
+                        <p><strong>Why it matters:</strong> Budget sample providers deliver 500 "completes" but 150 are fraudulent or low-quality. Yes, replacements are "free" - but YOUR time isn't. Your team spends 40+ hours flagging bad responses, documenting issues for the vendor, coordinating replacement waves, and re-validating new batches. Meanwhile, your project timeline slips and clients wait for clean data. Bad data = bad insights = bad business decisions.</p>
+                        <p><strong>Real example:</strong> A technology company paid for 800 B2B survey completes at $15 each ($12,000). After data validation, only 530 were usable - the rest were bots, speeders, or straight-liners. The research team spent 35 hours ($5,250) identifying fraud, documenting issues, and coordinating with the vendor for "free" replacements. Then spent another 18 hours ($2,700) validating the replacement batch and going back-and-forth on additional quality issues. Total hidden cost: $7,950 (66% over budget) - and the project was delayed 2 weeks.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>
+                            <span class="faq-number">2</span>
+                            Sample Management & Re-fielding
+                        </h3>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>What it means:</strong> Coordination time when incidence rates are wildly off projections, fielding stalls mid-project, or sample quality requires re-fielding. Includes chasing vendors for updates, managing soft launch issues, and coordinating "free" replacement completes.</p>
+                        <p><strong>Why it matters:</strong> "Free replacements" aren't free - they cost YOUR time. When a vendor promises 7-day fielding but takes 3 weeks due to sample issues, you're coordinating, explaining delays, and re-forecasting timelines instead of doing strategic work.</p>
+                        <p><strong>Real example:</strong> Healthcare research firm paid for 400 physician completes. Vendor estimated 10% incidence but actual was 3%. Project stalled after soft launch. PM spent 45 hours over 3 weeks coordinating vendors, sourcing supplementary sample, and explaining delays to clients. Hidden cost: $6,750 in coordination time, plus 2-week project delay.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>
+                            <span class="faq-number">3</span>
+                            Programming, Testing & Troubleshooting
+                        </h3>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>What it means:</strong> QA testing time to catch programming errors, fixing logic mistakes discovered during fielding, troubleshooting mobile optimization issues, and managing soft launch iterations. Budget providers often cut corners on QA, leaving you to discover problems after fielding starts.</p>
+                        <p><strong>Why it matters:</strong> Logic errors discovered after 200 completes means scrapping data and re-fielding. When skip patterns fail or piping breaks, you're the one fixing it mid-fielding while explaining to clients why data is delayed.</p>
+                        <p><strong>Real example:</strong> Financial services firm discovered a quota management error after 180 completes were collected in wrong demographic. Survey required re-programming and re-fielding. Research team spent 25 hours ($3,750) on troubleshooting and QA, scrapped $2,700 in unusable completes, and delayed project by 10 days.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>
+                            <span class="faq-number">4</span>
+                            Stakeholder & Client Communication
+                        </h3>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>What it means:</strong> Time spent explaining sample quality issues to clients, managing expectations when fielding is delayed, updating stakeholders on data cleaning progress, and handling escalations when problems emerge.</p>
+                        <p><strong>Why it matters:</strong> When sample quality fails, YOU'RE in uncomfortable client calls explaining why data isn't ready or why you need more budget for replacements. Senior team time explaining vendor failures is expensive and erodes client confidence.</p>
+                        <p><strong>Real example:</strong> Consulting firm's Director spent 8 hours ($3,200) in client calls explaining why survey data was 2 weeks late due to sample quality issues. Client questioned vendor selection competence. Follow-on project ($85K) went to competitor citing concerns about execution reliability.</p>
+                    </div>
+                </div>
+
+                <!-- FAQ 5 -->
+                <div class="faq-item">
+                    <div class="faq-question" onclick="toggleFAQ(this)">
+                        <h3>
+                            <span class="faq-number">5</span>
+                            Strategic Delays & Opportunity Cost
+                        </h3>
+                        <span class="faq-arrow">▼</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p><strong>What it means:</strong> The business impact when survey delays push back product launches, postpone strategic decisions, or delay other projects waiting for research insights. This is the hardest cost to quantify but often the largest.</p>
+                        <p><strong>Why it matters:</strong> Research exists to drive business decisions. When data delays push a product launch by 4 weeks, that's 4 weeks of lost revenue. When pricing research arrives too late for budget cycles, strategic decisions get made without data.</p>
+                        <p><strong>Real example:</strong> CPG company's pricing survey delayed 3 weeks due to sample quality issues. Product launch postponed, missing key retail buying window. Estimated revenue impact: $500K. The "cheap" $18K sample saved $3K vs. premium provider but cost $500K+ in lost business opportunity.</p>
+                    </div>
+                </div>
+
+                <!-- Bottom Line Callout -->
+                <div style="background: var(--gradient); color: white; padding: 30px; border-radius: 12px; margin-top: 20px;">
+                    <h3 style="font-size: 1.5rem; margin-bottom: 15px; color: white;">The Bottom Line</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin-bottom: 15px;">
+                        Hidden costs in quantitative research are real P&L impacts, even when they don't appear on the vendor invoice. Elite research buyers know that <strong>a $20,000 "cheap" survey often costs $32,000+ in total when you include data cleaning, coordination time, and project delays</strong>.
+                    </p>
+                    <p style="font-size: 1.1rem; line-height: 1.8; margin: 0;">
+                        Smart Connect Research exists because firms like yours were tired of false economies. Our clients save money not because we're cheaper - but because we eliminate the hidden costs that budget sample creates through rigorous quality standards and reliable delivery.
+                    </p>
+                </div>
+            </div>
         </div>
 
         <!-- Results Summary -->
@@ -1186,8 +1394,8 @@
         // Calculate total costs and show results
         function calculateTotalCosts() {
             // Get base prices
-            const altPrice = parseFloat(document.getElementById('altPrice').value) || 70000;
-            const scrPrice = parseFloat(document.getElementById('scrPrice').value) || 85000;
+            const altPrice = parseFloat(document.getElementById('altPrice').value) || 0;
+            const scrPrice = parseFloat(document.getElementById('scrPrice').value) || 0;
             const altProviderName = document.getElementById('altProviderName').value || 'Alternative Provider';
             
             // Get hidden costs (remove formatting)
@@ -1326,6 +1534,22 @@
                     }
                 }
             });
+        }
+
+        // Toggle FAQ accordion
+        function toggleFAQ(element) {
+            const faqItem = element.parentElement;
+            const isActive = faqItem.classList.contains('active');
+            
+            // Close all FAQs
+            document.querySelectorAll('.faq-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            
+            // Open clicked FAQ if it wasn't already open
+            if (!isActive) {
+                faqItem.classList.add('active');
+            }
         }
 
         // Prepare form submission with calculator data
